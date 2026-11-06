@@ -4,3 +4,92 @@
 @media(prefers-reduced-motion:reduce){.movie-controls,.movie-settings,.player-center-play,.movie-setting-toggle i,.movie-setting-toggle i:after,.player-countdown-track i{transition:none;animation:none}}
 
 .player-error{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 30px 85px;text-align:center;background:#101113e6}.player-error strong{font-size:16px;color:#f6f3ed}.player-error p{max-width:430px;font-size:12px;line-height:1.6;color:#93969f;margin:10px 0 18px}.player-error button{display:flex;align-items:center;gap:8px;padding:9px 13px;background:#ffffff10;color:#f6f3ed;border:1px solid #ffffff1a;border-radius:6px;font-size:12px}.movie-controls{z-index:3}
+
+/* Episode selection stays close to the screen on every viewport. */
+.cinema-page .watch-heading{margin-bottom:22px}
+.episode-navigator{margin:0 0 16px;border:1px solid var(--line,#ffffff12);border-radius:10px;background:#16171a;overflow:hidden}
+.episode-command-bar{display:grid;grid-template-columns:auto auto 1fr;gap:14px;align-items:center;padding:12px 14px}
+.episode-selectors{display:flex;align-items:center;gap:8px;min-width:0}
+.episode-select-field{position:relative;display:flex;align-items:center;gap:12px;min-width:108px;min-height:40px;padding:0 12px;background:#222328;border:1px solid #ffffff0c;border-radius:6px}
+.episode-select-field>span{font-size:11px;color:#92949e;white-space:nowrap;pointer-events:none}
+.episode-select-field>select{appearance:none;-webkit-appearance:none;border:0!important;background:transparent!important;color:#f6f3ed!important;font-size:13px;font-weight:650;padding:10px 18px 10px 0!important;min-width:35px;max-width:105px;outline-offset:3px;cursor:pointer}
+.episode-select-field>select:disabled{opacity:1;cursor:default}
+.episode-select-field>svg{position:absolute;right:10px;color:#8e9099;pointer-events:none}
+.episode-main-select{min-width:122px}
+.episode-step-controls{display:flex;align-items:center;gap:6px}
+.episode-step-controls>button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:0 11px;border:1px solid #ffffff0a;border-radius:6px;font-size:11px;background:transparent;color:#cfced2;transition:background .16s,color .16s}
+.episode-step-controls>button:hover:not(:disabled){background:#ffffff08;color:white}
+.episode-step-controls>button:disabled{opacity:.28;cursor:default}
+.episode-expand{display:flex;align-items:center;justify-self:end;gap:9px;min-height:40px;padding:0 11px;border:0;background:transparent;color:#c5c5cd;font-size:11px;border-radius:6px}
+.episode-expand:hover,.episode-expand.active{background:#ffffff06;color:#f6f3ed}
+.episode-expand small{font-size:10px;color:#8a8d97;font-variant-numeric:tabular-nums}
+.episode-expand>svg:last-child{transition:transform .18s;color:#898b95}
+.episode-expand.active>svg:last-child{transform:rotate(180deg)}
+.episode-collection{padding:20px;border-top:1px solid #ffffff0b;animation:settings-in .15s ease-out}
+.episode-collection-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:16px}
+.episode-collection-heading h2{font-size:15px;margin:0 0 4px;color:#eeeae4}
+.episode-collection-heading p{font-size:10px;color:#82858f;margin:0}
+.episode-collection .episode-auto-status{font-size:10px;color:#93968d;white-space:nowrap}
+.episode-collection .episode-filter{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin:0 0 15px;padding:0}
+.episode-collection .episode-filter>label{display:flex;align-items:center;gap:8px;width:200px;max-width:60%;padding:8px 10px;border:1px solid #ffffff0c;background:#101113;border-radius:5px;color:#8e909c}
+.episode-collection .episode-filter input{background:none;border:0;padding:0;font-size:11px;width:100%;min-width:0;outline:none}
+.episode-collection .episode-filter>select{font-size:11px;padding:8px 10px;max-width:40%}
+.episode-collection .full-episodes{grid-template-columns:repeat(auto-fill,minmax(45px,1fr));max-height:250px;overflow:auto;padding:1px;scrollbar-width:thin}
+.episode-collection .full-episodes button{min-height:38px}
+
+/* Languages and translation type are visible choices, never hidden select menus. */
+.cinema-page .translation-panel{padding:17px;min-width:0}
+.translation-panel .voice-title{margin-bottom:15px}
+.translation-panel .voice-title h2{font-size:14px;font-weight:650}
+.translation-panel .voice-title>span{font-size:9px;color:#8a8b95;white-space:nowrap}
+.translation-languages{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:14px}
+.translation-languages>button{display:flex;align-items:center;gap:6px;font-size:10px;line-height:1.3;min-height:30px;padding:7px 9px;border:1px solid #ffffff10;border-radius:5px;background:transparent;color:#92959f;transition:color .16s,background .16s,border-color .16s}
+.translation-languages>button>span{font-size:9px;opacity:.65}
+.translation-languages>button:hover{color:#ede8df;background:#ffffff04}
+.translation-languages>button[aria-pressed=true]{color:#edc98f;background:#e7b86f0c;border-color:#e7b86f50}
+.translation-kind{display:grid;grid-template-columns:.62fr 1fr 1.12fr;gap:2px;padding:3px;margin-bottom:13px;background:#0d0e11;border:1px solid #ffffff08;border-radius:6px}
+.translation-kind>button{display:flex;align-items:center;justify-content:center;gap:4px;min-width:0;min-height:32px;border:0;border-radius:4px;padding:5px 3px;background:none;color:#91939d;font-size:10px;white-space:nowrap}
+.translation-kind>button>svg{display:none;flex-shrink:0}
+.translation-kind>button>span{font-size:8px;opacity:.55}
+.translation-kind>button[aria-pressed=true]{color:#efebe5;background:#2a2b31;box-shadow:0 1px 3px #0003}
+.translation-kind>button:disabled{opacity:.35;cursor:default}
+.translation-panel .voice-search{max-width:none;margin-bottom:12px;min-height:36px;padding:8px 10px}
+.translation-panel .voice-search>button{display:grid;place-items:center;flex-shrink:0;width:20px;height:20px;padding:2px;color:#999ca7;border:0;background:none}
+.translation-panel .voice-options{gap:4px;max-height:330px;overscroll-behavior:contain}
+.translation-panel .voice-options>button{min-height:47px;padding:10px;font-size:12px;line-height:1.35}
+.translation-panel .voice-options>button>span{min-width:0;overflow-wrap:anywhere}
+.translation-panel .voice-options small{font-size:9px;line-height:1.6;margin-top:3px}
+.translation-selected{flex-shrink:0;color:var(--accent,#e7b86f)}
+.translation-panel .translation-fallback{font-size:10px;line-height:1.6;color:#9c9589;margin:-1px 0 12px}
+.translation-loading{display:flex;align-items:center;gap:6px}
+.translation-panel .translation-empty{text-align:center;padding:20px 6px}
+.translation-empty p{font-size:12px;color:#8c8f9a;margin:0 0 10px;line-height:1.5}
+.translation-empty button{font-size:11px;color:var(--accent,#e7b86f);background:none;border:0;padding:7px}
+.translation-panel>.translation-memory{font-size:9px;line-height:1.6;color:#757883;border-top:1px solid #ffffff08;margin-top:14px;padding-top:12px}
+@media(min-width:1001px){.cinema-page.theatre-mode .translation-languages{max-width:none}.cinema-page.theatre-mode .translation-kind,.cinema-page.theatre-mode .translation-panel .voice-search{max-width:340px}.cinema-page.theatre-mode .translation-panel .voice-options{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}}
+@media(max-width:1000px){.translation-panel .translation-kind{max-width:340px}.translation-kind>button>svg{display:block}.translation-panel .voice-search{max-width:340px}.translation-panel .voice-options{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));max-height:250px}}
+@media(max-width:600px){.cinema-page .watch-heading{margin-bottom:17px}.episode-navigator{margin-bottom:12px;border-radius:8px}.episode-command-bar{grid-template-columns:minmax(0,1fr) auto;gap:9px;padding:10px}.episode-selectors{display:grid;grid-template-columns:.9fr 1fr;gap:7px}.episode-select-field,.episode-main-select{min-width:0;gap:7px;padding:0 8px}.episode-select-field>span{font-size:10px}.episode-select-field>select{font-size:12px;min-width:30px;max-width:74px;padding-right:14px!important}.episode-select-field>svg{right:7px;width:11px}.episode-step-controls{gap:4px}.episode-step-controls>button{width:33px;padding:0;min-height:40px}.episode-step-controls>button>span{display:none}.episode-expand{grid-column:1/-1;justify-self:stretch;justify-content:flex-start;min-height:29px;padding:4px 1px 0;border-radius:0;border-top:1px solid #ffffff08}.episode-expand>svg:last-child{margin-left:auto}.episode-expand:hover,.episode-expand.active{background:transparent}.episode-collection{padding:15px 12px}.episode-collection-heading{gap:10px}.episode-collection-heading h2{font-size:13px}.episode-collection .episode-auto-status{font-size:8px;gap:4px}.episode-collection .full-episodes{grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}.episode-collection .full-episodes button{min-height:36px}.cinema-page .translation-panel{padding:16px}.translation-languages{gap:7px;margin-bottom:13px}.translation-languages>button{min-height:34px;font-size:11px}.translation-kind{max-width:none!important}.translation-kind>button{min-height:36px;font-size:11px;gap:5px}.translation-kind>button>span{font-size:9px}.translation-panel .voice-search{max-width:none;min-height:40px}.translation-panel .voice-search input{font-size:12px}.translation-panel .voice-options,.cinema-page.theatre-mode .translation-panel .voice-options{grid-template-columns:repeat(2,minmax(0,1fr));max-height:280px}.translation-panel .voice-options>button{font-size:11px;min-height:53px;padding:10px 8px}.translation-panel>.translation-memory{font-size:10px}.translation-panel .translation-fallback{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.episode-collection{animation:none}.episode-expand>svg:last-child,.episode-step-controls>button,.translation-languages>button{transition:none}}
+.watch-unavailable{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:310px;padding:36px 24px;border:1px solid #ffffff0c;border-radius:10px;background:#151619;text-align:center}.watch-unavailable>svg{color:#727581;margin-bottom:18px}.watch-unavailable h2{font-size:21px;line-height:1.4;letter-spacing:-.04em;margin:0 0 10px;max-width:560px}.watch-unavailable>p{font-size:12px;color:#92959f;line-height:1.7;max-width:450px;margin:0 0 22px}.watch-unavailable-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}.watch-unavailable-actions>button,.watch-unavailable-actions>a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:38px;padding:8px 13px;border:1px solid #ffffff12;border-radius:5px;background:#ffffff05;color:#dbd8d1;font-size:11px}.watch-unavailable-actions>button{border-color:#e7b86f33;color:var(--accent,#e7b86f);background:#e7b86f08}.watch-alternatives{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:25px;font-size:11px}.watch-alternatives>span{color:#8f929d}.watch-alternatives>a{display:flex;align-items:center;gap:4px;color:var(--accent,#e7b86f)}.empty-season-selector{margin-bottom:15px}.empty-season-selector>label{display:flex;align-items:center;gap:12px;font-size:12px;color:#a9acb5}.empty-season-selector select{font-size:12px;padding:8px 12px}@media(max-width:600px){.watch-unavailable{min-height:270px;padding:28px 18px}.watch-unavailable h2{font-size:18px}.watch-unavailable>p{font-size:11px}.watch-unavailable-actions{width:100%;gap:8px}.watch-unavailable-actions>button,.watch-unavailable-actions>a{font-size:10px;padding:8px 10px}.watch-alternatives{flex-direction:column;gap:12px}}
+
+/* Volume has a direct desktop slider and a touch-sized panel on small screens. */
+.movie-volume{position:relative;flex-shrink:0}
+.movie-volume .movie-volume-inline{display:block;width:70px;min-width:0;height:24px;margin:0 2px;padding:0;background:transparent;accent-color:var(--accent,#e7b86f);cursor:pointer}
+.movie-control-row .movie-volume-expand{min-width:20px;width:20px;padding:2px;margin-right:5px;color:#b4b5bd}
+.movie-volume-expand svg{transition:transform .16s}
+.movie-volume.is-open .movie-volume-expand{color:#f3d5a5;background:#ffffff10}
+.movie-volume.is-open .movie-volume-expand svg{transform:rotate(180deg)}
+.movie-volume-panel{position:absolute;left:-35px;bottom:46px;width:230px;padding:14px;background:#1b1c21f7;border:1px solid #ffffff20;border-radius:9px;box-shadow:0 12px 40px #0007;z-index:7;backdrop-filter:blur(20px);color:#ece9e3;cursor:default}
+.movie-volume-panel>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.movie-volume-panel strong{font-size:12px;font-weight:600}
+.movie-volume-panel output{font-size:11px;color:#b7b8c2;font-variant-numeric:tabular-nums}
+.movie-volume-adjust{display:flex;align-items:center;gap:9px}
+.movie-control-row .movie-volume-adjust>button{min-width:32px;width:32px;height:34px;padding:6px;background:#ffffff07;border:1px solid #ffffff0b;border-radius:5px}
+.movie-control-row .movie-volume-adjust>button:hover:not(:disabled){background:#ffffff12}
+.movie-volume .movie-volume-panel input{display:block;flex:1;min-width:0;width:100%;height:32px;padding:0;margin:0;background:transparent;accent-color:var(--accent,#e7b86f);cursor:pointer}
+.movie-volume-panel>small{display:block;font-size:9px;line-height:1.5;color:#898d99;margin-top:8px}
+.movie-volume input[type=range]{appearance:auto;-webkit-appearance:auto;touch-action:pan-y}
+.movie-volume input[type=range]:focus-visible{outline:2px solid var(--accent,#e7b86f);outline-offset:3px;border-radius:4px}
+@media(max-width:1050px){.movie-volume .movie-volume-inline{display:none}.movie-control-row .movie-volume-expand{margin-right:2px}}
+@media(max-width:600px){.movie-control-row .movie-volume-expand{min-width:19px;width:19px;margin-right:1px}.movie-volume-panel{width:224px;bottom:39px;left:-49px;padding:12px}.movie-volume .movie-volume-panel input{height:36px}.movie-control-row .movie-volume-adjust>button{width:34px;min-width:34px;height:36px}.movie-volume-panel>small{font-size:9px;margin-top:6px}.movie-volume-panel strong{font-size:12px}.movie-volume-panel output{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.movie-volume-expand svg{transition:none}}

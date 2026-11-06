@@ -31,10 +31,11 @@ def decode(value):
     return result
 
 
-def _request(token,params):
+def _request(token,params,endpoint='search'):
+    if endpoint not in ('search','list'):raise ValueError('Unsupported Kodik endpoint')
     proxy=os.getenv('ANIME_PROXY')
     with requests.Session() as session:
-        r=session.post('https://kodik-api.com/search',data={**params,'token':token},timeout=(4,10),
+        r=session.post('https://kodik-api.com/'+endpoint,data={**params,'token':token},timeout=(4,10),
             proxies={'http':proxy,'https':proxy} if proxy else None)
         if r.status_code in (401,403):raise TokenUnavailable('Kodik не принял токен')
         r.raise_for_status();data=r.json()
@@ -43,22 +44,25 @@ def _request(token,params):
         return data
 
 
-def request(params):
+def request(params,endpoint='search'):
     global _token,_expires,_retry_after
+    if endpoint not in ('search','list'):raise ValueError('Unsupported Kodik endpoint')
+    def perform(token):
+        return _request(token,params) if endpoint=='search' else _request(token,params,endpoint)
     configured=os.getenv('KODIK_TOKEN')
-    if configured:return _request(configured,params)
+    if configured:return perform(configured)
     if not enabled():raise TokenUnavailable('Автоматический общий токен выключен')
     with _lock:
         token=_token if _expires>time.monotonic() else None
     if token:
-        try:return _request(token,params)
+        try:return perform(token)
         except TokenUnavailable:
             with _lock:
                 if _token==token:_token=None
     # Only the first concurrent search discovers a token. Cache success for six hours,
     # and failed discovery for ten minutes to avoid hammering GitHub or Kodik.
     with _lock:
-        if _token and _expires>time.monotonic():return _request(_token,params)
+        if _token and _expires>time.monotonic():return perform(_token)
         if _retry_after>time.monotonic():raise TokenUnavailable('Общий токен временно недоступен')
         _retry_after=time.monotonic()+600
         r=requests.get(TOKEN_LIST,timeout=(4,10));r.raise_for_status();data=r.json()
@@ -66,7 +70,7 @@ def request(params):
         for i,entry in enumerate(candidates):
             if i:time.sleep(2)
             try:
-                token=decode(entry['tokn']);result=_request(token,params)
+                token=decode(entry['tokn']);result=perform(token)
             except (TokenUnavailable,ValueError,KeyError):continue
             _token=token;_expires=time.monotonic()+21600;_retry_after=0
             return result

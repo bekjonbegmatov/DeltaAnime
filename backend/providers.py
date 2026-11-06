@@ -1,8 +1,10 @@
 """Public source APIs. Requests are bounded; video URLs are resolved per episode.
 Protocol references and integration limits: docs/SOURCES.md.
 """
+import ast
 import re
-from urllib.parse import urljoin
+from concurrent.futures import ThreadPoolExecutor
+from urllib.parse import urljoin, urlsplit
 import requests
 from fastapi import HTTPException
 
@@ -36,17 +38,47 @@ def normalize_lib(a):
         'provider':'AnimeLib','source':'animelib','poster':a.get('cover',{}).get('default'),
         'description':c.plain(a.get('summary')),'genres':[g['name'] for g in a.get('genres',[])],
         'year':int(year[1]) if year else None,'shikimori_id':int(shiki[1]) if shiki else None,
-        'mal_id':int(shiki[1]) if shiki else None,'rating':a.get('shiki_rate'),'rating_source':'Shikimori',
+        'mal_id':None,'rating':a.get('shiki_rate'),'rating_source':'Shikimori',
         'format':a.get('type',{}).get('label'),'status':a.get('status',{}).get('label'),
         'playable':not a.get('is_licensed',False),'url':'https://animelib.org/ru/anime/'+a['slug_url']}
 
 
-def normalize_vost(a):
+def vost_episode_number(name):
+    name=str(name or '').strip().casefold()
+    if name in ('фильм','полнометражный фильм','movie'):
+        return 1
+    match=re.match(r'^(\d+)\s*(?:серия|$)',name)
+    return int(match[1]) if match and int(match[1])>0 else None
+
+
+def vost_rows(rows):
+    if not isinstance(rows,list):raise ValueError('Invalid episode list')
+    return [{'number':number,'season':1,'streams':entry} for entry in rows
+            if (number:=vost_episode_number(entry.get('name')))
+            and any(isinstance(entry.get(key),str) and entry[key].startswith(('https://','http://')) for key in ('hd','std'))]
+
+
+def normalize_vost(a, playlist=None):
     from . import catalog as c
     title=re.sub(r'\s*\[[^]]*\]\s*$','',a['title']).strip().split(' / ',1)
+    if playlist is None:
+        # Search metadata may contain trailers or an empty announcement. It is
+        # only preliminary evidence; search/detail verify the actual playlist.
+        try:series=ast.literal_eval(a.get('series') or '{}')
+        except (ValueError,SyntaxError):series={}
+        numbers=[n for label,value in series.items() if value and (n:=vost_episode_number(label))] if isinstance(series,dict) else []
+    else:numbers=[row['number'] for row in vost_rows(playlist)]
+    poster=a.get('urlImagePreview')
+    image=urlsplit(poster or '')
+    # The API still advertises an obsolete CDN certificate. AnimeVost's own
+    # pages serve the same upload paths on the main HTTPS host.
+    if image.hostname=='static.openni.ru' and image.path.startswith('/uploads/posts/'):
+        poster='https://animevost.org'+image.path
+    total=re.search(r'\bиз\s+(\d+)',a['title'])
     return {'id':f"av-{a['id']}",'title':title[0],'original_title':title[1] if len(title)>1 else None,
-        'provider':'AnimeVost','source':'animevost','poster':a.get('urlImagePreview'),'year':int(a['year']) if str(a.get('year','')).isdigit() else None,
-        'description':c.plain(a.get('description')),'genres':a.get('genre','').split(', '),'format':a.get('type'),'playable':True}
+        'provider':'AnimeVost','source':'animevost','poster':poster,'year':int(a['year']) if str(a.get('year','')).isdigit() else None,
+        'description':c.plain(a.get('description')),'genres':a.get('genre','').split(', '),'format':a.get('type'),
+        'available_episodes':len(set(numbers)),'episodes_total':int(total[1]) if total else None,'playable':bool(numbers)}
 
 
 def search(source,q):
@@ -54,7 +86,14 @@ def search(source,q):
     if source=='animelib':
         return [c.save(normalize_lib(a),{'slug':a['slug_url']}) for a in lib('/anime',{'q':q,'site_id[]':5})['data']]
     data=fetch(VOST+'/search',form={'name':q})
-    return [c.save(normalize_vost(a),{'id':a['id']}) for a in data.get('data',[])]
+    def verified(a):
+        try:
+            playlist=fetch(VOST+'/playlist',form={'id':a['id']})
+            item=normalize_vost(a,playlist)
+            return c.save(item,{'id':a['id']}) if item['playable'] else None
+        except (requests.RequestException,ValueError,TypeError,KeyError):return None
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        return [item for item in pool.map(verified,data.get('data',[])[:24]) if item]
 
 
 def detail(key):
@@ -65,7 +104,7 @@ def detail(key):
         item=normalize_lib(a)
     elif key.startswith('av-'):
         data=fetch(VOST+'/info',form={'id':lookup['id']})
-        if data.get('data'):item=normalize_vost(data['data'][0])
+        if data.get('data'):item=normalize_vost(data['data'][0],fetch(VOST+'/playlist',form={'id':lookup['id']}))
     return c.save(item,lookup)
 
 
@@ -77,8 +116,7 @@ def episode_rows(key):
         rows=lib('/episodes',{'anime_id':lookup['slug']})['data']
         return [{'number':int(e['number']),'season':int(e['season'] or 1),'id':e['id']} for e in rows if str(e['number']).isdigit()]
     rows=fetch(VOST+'/playlist',form={'id':lookup['id']})
-    if not isinstance(rows,list):raise ValueError('Invalid episode list')
-    return [{'number':int(m[1]),'season':1,'streams':e} for e in rows if (m:=re.match(r'^(\d+)\s*(?:серия|$)',e.get('name','')))]
+    return vost_rows(rows)
 
 
 def players(key,episode,season,remember):

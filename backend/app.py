@@ -154,7 +154,7 @@ def players(anime_id: str, episode: int = Query(ge=1, le=10000), season:int=Quer
             release=catalog.lib_release(anime_id[4:])
             if episode not in {int(e['ordinal']) for e in release.get('episodes',[]) if e.get('ordinal')}:
                 raise HTTPException(404,'Серия недоступна')
-            options=[{"id": remember("lib-player", (anime_id[4:], episode)), "label": "AniLibria.TV", "player": "AniLibria.TV · прямой HLS"}]
+            options=[{"id": remember("lib-player", (anime_id[4:], episode)), "label": "AniLibria.TV", "player": "AniLibria.TV · прямой HLS", "language":"ru", "kind":"voice"}]
             external=release.get('external_player')
             if external and core.supports('https:'+external if external.startswith('//') else external):
                 options.append({'id':remember('embed',{'url':external,'episode':episode,'season':season}), 'label':'AniLibria.TV','player':'Kodik'})

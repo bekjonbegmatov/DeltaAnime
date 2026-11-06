@@ -39,7 +39,7 @@ def test_filters_reach_upstream_and_paginate(monkeypatch):
         calls.append(body)
         return {'data':[],'meta':{'pagination':{'total':0,'current_page':2,'total_pages':0}}}
     monkeypatch.setattr(catalog,'remote',remote)
-    response=client.get('/api/catalog?page=2&year=2020&genre=14&kind=TV&status=ongoing&sort=year')
+    response=client.get('/api/catalog?provider=aniliberty&page=2&year=2020&genre=14&kind=TV&status=ongoing&sort=year')
     assert response.status_code==200
     body=calls[0]
     assert body['page']==2
@@ -49,7 +49,7 @@ def test_filters_reach_upstream_and_paginate(monkeypatch):
 def test_invalid_catalog_filters_are_rejected():
     assert client.get('/api/catalog?page=0').status_code==422
     assert client.get('/api/catalog?sort=sql').status_code==422
-    assert client.get('/api/catalog?genre=abc').status_code==422
+    assert client.get('/api/catalog?provider=aniliberty&genre=abc').status_code==400
 
 
 def test_kodik_requires_configured_key(monkeypatch):
@@ -88,3 +88,4 @@ def test_lib_rejects_unavailable_episode_and_binds_valid_episode(monkeypatch):
     assert client.get('/api/anime/lib-1/players?episode=2').status_code==404
     data=client.get('/api/anime/lib-1/players?episode=3').json()
     assert server.recall(data['players'][0]['id'],'lib-player')==('1',3)
+    assert data['players'][0]['language']=='ru' and data['players'][0]['kind']=='voice'
