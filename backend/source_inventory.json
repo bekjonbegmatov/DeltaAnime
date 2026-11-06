@@ -1,0 +1,17 @@
+[
+  {"id":"anixart","name":"Anixart","type":"Каталог и просмотр","note":"Найден Python API-клиент с авторизацией. Адаптер не подключён; требуется отдельная проверка текущего протокола и доступа.","url":"https://github.com/SantaSpeen/anixart"},
+  {"id":"yummyanime","name":"YummyAnime","type":"Каталог и просмотр","note":"Найден в каталоге anime-sources. Домен и текущий API не проверены; адаптера нет.","url":"https://github.com/anshumanv/awesome-anime-sources#streaming"},
+  {"id":"anidub","name":"AniDUB","type":"Студия и сайт","note":"Озвучки встречаются в подключённом AnimeLib. Отдельный поиск сайта AniDUB не подключён.","url":"https://online.anidub.com/"},
+  {"id":"anistar","name":"AniStar","type":"Студия и сайт","note":"Озвучки найдены в Alloha; доступ зависит от агрегатора. Прямой адаптер сайта не подключён.","url":"https://anistar.org/"},
+  {"id":"animebuff","name":"AnimeBuff","type":"Каталог и просмотр","note":"Найден в открытом списке источников. Поиск, серии и воспроизведение ещё не проверены.","url":"https://animebuff.ru/"},
+  {"id":"animepahe","name":"AnimePahe","type":"Англоязычный каталог","note":"Найден в открытом списке источников. Нужен отдельный адаптер и проверка текущего сайта.","url":"https://animepahe.com/"},
+  {"id":"animeflv","name":"AnimeFLV","type":"Испаноязычный каталог","note":"Найден в открытом списке источников. Не подключён к русскоязычному поиску.","url":"https://animeflv.net/"},
+  {"id":"crunchyroll","name":"Crunchyroll","type":"Официальный сервис просмотра","note":"Самостоятельный сервис с собственным доступом. Встраивание видео и авторизация не реализованы.","url":"https://www.crunchyroll.com/"},
+  {"id":"kitsu","name":"Kitsu","type":"Метаданные","note":"Кандидат для расширения каталога. Не предоставляет видеопотоки; адаптер не подключён.","url":"https://kitsu.io/"},
+  {"id":"anidb","name":"AniDB","type":"Метаданные и связи релизов","note":"Кандидат для сопоставления тайтлов и сезонов. API-клиент пока не подключён.","url":"https://anidb.net/"},
+  {"id":"ann","name":"Anime News Network","type":"Энциклопедия и новости","note":"Кандидат для дополнительных сведений об аниме; не источник видео.","url":"https://www.animenewsnetwork.com/"},
+  {"id":"simkl","name":"SIMKL","type":"Метаданные и история","note":"Кандидат для каталога и синхронизации истории. Интеграция не реализована.","url":"https://simkl.com/"},
+  {"id":"anilote","name":"Anilote","type":"Публичный API каталога","note":"Найдена документация API; тестовый запрос поиска завершился таймаутом. Адаптер не подключён.","url":"https://anilote.me/api"},
+  {"id":"consumet","name":"Consumet","type":"Набор адаптеров","note":"При проверке GitHub вернул 451 Repository access blocked. Не установлен и не используется.","url":"https://github.com/consumet/consumet.ts"},
+  {"id":"aniyomi","name":"Aniyomi extensions","type":"Примеры адаптеров для Android","note":"Исследованы исходники AnimeLib и AnimeVost. APK-плагины не запускаются в веб-приложении; подключены самостоятельные Python-адаптеры публичных API.","url":"https://github.com/fallen02/aniyomi-sources/tree/main/src/ru"}
+]

@@ -1,0 +1,35 @@
+name: deltaanime
+services:
+  app:
+    build:
+      context: .
+      target: runtime
+    image: deltaanime:local
+    init: true
+    restart: unless-stopped
+    ports:
+      - "${BIND_HOST:-127.0.0.1}:${APP_PORT:-8080}:8080"
+    environment:
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1}
+      KODIK_TOKEN: ${KODIK_TOKEN:-}
+      KODIK_AUTO_TOKEN: ${KODIK_AUTO_TOKEN:-1}
+      ALLOHA_TOKEN: ${ALLOHA_TOKEN:-}
+      ANIMEGO_MIRROR: ${ANIMEGO_MIRROR:-animego.me}
+      ANIME_PROXY: ${ANIME_PROXY:-}
+    volumes:
+      - catalog-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  catalog-data:
